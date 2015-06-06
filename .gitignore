@@ -1,0 +1,9 @@
+*.pch
+*.user
+[Bb]in
+[Dd]ebug*/
+obj/
+[Rr]elease*/
+_ReSharper*/
+*.bak
+*.suo
