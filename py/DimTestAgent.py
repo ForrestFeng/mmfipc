@@ -71,7 +71,7 @@ class HardwareStateEvtMsgResolver():
         return self._get_reptot_by_ReportType_LogicalName("Bucky", "None")
 
     @property
-    def TableBucyRpt(self):
+    def TableBuckyRpt(self):
         """
         :return: coresponding report in the form of SortedDict or None if not find
         """

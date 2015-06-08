@@ -204,7 +204,7 @@ class MmfIpcServer(object):
 
 
                 result = eval(s)
-                print s, result
+                #print s, result
                 # do not set return value if return value is null (the method return nothing)
                 if result is not None:
                     self.mmf.put_return_value(result)
