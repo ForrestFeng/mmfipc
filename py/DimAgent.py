@@ -25,23 +25,14 @@ class DimAgent():
     def VerifyHardwareState(self, property_name, expect_value, timeout=3):
         return DimAgent.__dimMsgCollector.VerifyHardwareState(property_name, expect_value, timeout)
 
-    @property
-    def HardwareState(self):
-        return DimAgent.__dimMsgCollector.HardwareState
 
     @property
-    def HardwareStateMsg(self):
+    def HardwareStateEvtMsg(self):
         return DimAgent.__dimMsgCollector.HardwareStateEvtMsg
 
     @property
-    def Messages(self):
-        """
-        get all received messages of the type sorted dict
-        :return:
-        """
-        return DimAgent.__dimMsgCollector.msgDict
-
-
+    def HardwareStateEvtMsgRaw(self):
+        return DimAgent.__dimMsgCollector.HardwareStateEvtMsgRaw
 
 
 def main():
@@ -52,7 +43,7 @@ def main():
     agent.ChangeBucy(DimAgent.WALL)
     agent.ChangeBucy(DimAgent.TABLE)
     time.sleep(3)
-    print agent.Messages
+    print agent.HardwareStateEvtMsgRaw
     while True:
         return
         agent.ChangeBucy(DimAgent.WALL)

@@ -15,40 +15,40 @@ class HardwareStateEvtMsgResolver():
     """
      hardStateEvt is the type of SortedDict
     """
-    def __init__(self, hardStateEvt):
-        self.hardStateEvt = hardStateEvt
+    def __init__(self, hardStateSortedDict):
+        self.__hardStateSortedDict = hardStateSortedDict
 
     def __get_reptot_by_ReportType_LogicalName(self, reportType, logicalName):
-        for rpt in self.hardStateEvt.Reports:
+        for rpt in self.__hardStateSortedDict.Reports:
             if rpt.ReportType == reportType and rpt.Items.LogicalName == logicalName:
                 return rpt
         return None
 
     def __get_report_by_ReportType_SerialNumber(self, reportType, serialNumber):
-        for rpt in self.hardStateEvt.Reports:
+        for rpt in self.__hardStateSortedDict.Reports:
             if rpt.ReportType == reportType and rpt.Items.SerialNumber == serialNumber:
                 return rpt
         return None
 
     def __get_repport_by_Id(self, id):
-        for rpt in self.hardStateEvt.Reports:
+        for rpt in self.__hardStateSortedDict.Reports:
             if rpt.Id == id:
                 return rpt
         return None
 
     def __get_reptot_by_ReportType(self, reportType):
-        for rpt in self.hardStateEvt.Reports:
+        for rpt in self.__hardStateSortedDict.Reports:
             if rpt.ReportType == reportType:
                 return rpt
         return None
 
     @property
-    def HardwareStateEvtMsg(self):
+    def HardwareStateSD(self):
         """
         get the HardwareStateEvtMsg back from the r
         :return:
         """
-        return self.hardStateEvt
+        return self.__hardStateSortedDict
 
     @property
     def CollimatorRpt(self):
@@ -191,9 +191,7 @@ class DimMsgCollector(MmfIPC.MmfIpcServer):
         self.msgDict = SDict.SortedDict()
         super(DimMsgCollector, self).__init__(mmfName)
         # current  HardwareStateEvtMsgResolver object for the hardware state message string
-        self.HardwareState = None
-        # current hardware state message string
-        self.HardwareStateEvtMsg = None
+        self.HardwareState = HardwareStateEvtMsgResolver(None)
         self.Expection = {}
 
     def __processDimReplyEvtMsg(self, shortMsgType):
@@ -350,7 +348,8 @@ class DimMsgCollector(MmfIPC.MmfIpcServer):
         # store messages
         self.msgDict[shortMsgType] = conetDict
         self.msgDict[shortMsgType+"_Time"] = msgTime
-        self.msgDict[shortMsgType+"_Body"] = msgTime
+        self.msgDict[shortMsgType+"_Body"] = msgContent
+        self.msgDict[shortMsgType+"_Raw"] = rawMsg
 
         # process messages
         if shortMsgType == 'DimReplyEvtMsg':
@@ -359,6 +358,14 @@ class DimMsgCollector(MmfIPC.MmfIpcServer):
             self.__processHardwareStateEvtMsg('HardwareStateEvtMsg')
 
         return shortMsgType
+
+    @property
+    def HardwareStateEvtMsg(self):
+        return self.msgDict["HardwareStateEvtMsg_Body"]
+
+    @property
+    def HardwareStateEvtMsgRaw(self):
+        return self.msgDict["HardwareStateEvtMsg_Raw"]
 
     def WaitExpressionMatch(self, expressionString, expectValue, timeoutInSeconds):
         """
