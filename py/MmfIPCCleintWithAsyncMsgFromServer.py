@@ -7,6 +7,10 @@ class IPCClient (MmfIPC.MmfIpcClient):
         result = self.invoke('Add', a, b)
         return result
 
+    def SetName(self, name):
+        result = self.invoke('SetName', name)
+
+        return result
     def Hello(self, a, b, c):
         return self.invoke('Hello', a, b, c)
 
@@ -30,7 +34,8 @@ serverEvtThread.start()
 i  = 0
 while True:
     time.sleep(1)
-    client.Add(i, i)
+    #client.Add(i, i)
+    client.SetName("new name")
     i = i + 1
 
 print 'Done'

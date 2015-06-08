@@ -100,6 +100,7 @@ class Mmf():
         return self._get_str_from_block(0)
 
 class MmfIpcClient(object):
+    DEBUG = False
     def __init__(self, mmfName):
         self.mmf = Mmf(mmfName)
         self.callingEvt = win32event.CreateEvent(None, False, False, mmfName + "CallingEvt")
@@ -137,22 +138,22 @@ class MmfIpcClient(object):
                 # not consumed by server side
                 offlineInfo = "{} Server is Offline!".format(self.mmf.mmfName)
 
-#if DEBUG
-            argList = "";
-            for i in range(len(args)):
-                if i + 1 < len(args):
-                    argList += "{}, ".format(args[i])
+            if self.DEBUG:
+                argList = "";
+                for i in range(len(args)):
+                    if i + 1 < len(args):
+                        argList += "{}, ".format(args[i])
+                    else:
+                        argList += "{0}".format(args[i])
+
+                if offlineInfo != "":
+                    print "{0}({1}) - Skiped as {2}".format(funcName, argList, offlineInfo)
                 else:
-                    argList += "{0}".format(args[i])
+                    print "{0}({1}) - Ivoked".format(funcName, argList)
+
 
             if offlineInfo != "":
-                print "{0}({1}) - Skiped as {2}".format(funcName, argList, offlineInfo)
-            else:
-                print "{0}({1}) - Ivoked".format(funcName, argList)
-#endif
-
-            if offlineInfo != "":
-                return "{0}({1}) - Skiped as {2}".format(funcName, argList, offlineInfo)
+                return "{0} - Skiped as {1}".format(funcName, offlineInfo)
 
             if win32event.WaitForSingleObject(self.completeEvt, 1000*5) == 0:
                 return self.mmf.get_return_value()
@@ -163,6 +164,7 @@ class MmfIpcClient(object):
             win32event.ReleaseMutex(self.invokeMutex)
 
 class MmfIpcServer(object):
+    DEBUG = False
     def __init__(self, mmfName):
         self.mmf = Mmf(mmfName)
         self.callingEvt = win32event.CreateEvent(None, False, False, mmfName + "CallingEvt")
@@ -190,18 +192,22 @@ class MmfIpcServer(object):
                 func, argc, args = self.mmf.get_func_and_args()
                 args = tuple(args)
                 s = 'self.{}(*args)'.format(func)
-#if DEBUG
-                argList = ""
-                for i in range(len(args)):
-                    if i + 1 < len(args):
-                        argList += "{0}, ".format(args[i])
-                    else:
-                        argList += "{0}".format(args[i])
-                print "{0}({1})".format(func, argList)
-#endif
+
+                if self.DEBUG:
+                    argList = ""
+                    for i in range(len(args)):
+                        if i + 1 < len(args):
+                            argList += "{0}, ".format(args[i])
+                        else:
+                            argList += "{0}".format(args[i])
+                    print "{0}({1})".format(func, argList)
+
 
                 result = eval(s)
-                self.mmf.put_return_value(result)
+                print s, result
+                # do not set return value if return value is null (the method return nothing)
+                if result is not None:
+                    self.mmf.put_return_value(result)
             finally:
                 win32event.ReleaseMutex(self.mmfMutex)
                 win32event.SetEvent(self.completeEvt)

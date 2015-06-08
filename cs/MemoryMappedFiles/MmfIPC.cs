@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
 
-namespace MemoryMappedFiles
+namespace MmfIPC
 {
     internal class mmap
     {
@@ -203,7 +198,7 @@ namespace MemoryMappedFiles
         /// monitor and call function from mmf
         /// 
         /// </summary>
-        protected string invoke(string funcName, string[] args)
+        public string invoke(string funcName, string[] args)
         {
             //Call me one by one
             //Lock invokeMutex to ensure only one invoke is processed in multi-thread or multi-process client running
@@ -255,7 +250,7 @@ namespace MemoryMappedFiles
 #endif
                 
                 if (offlineInfo != null)
-                    return string.Format("{0}({1}) - Skiped as {2}", funcName, argList, offlineInfo);
+                    return string.Format("{0} - Skiped as {1}", funcName, offlineInfo);
 
                 // Server side might exit abnormally without complete the func processing. 
                 // So we have to wait for 5 seconds at most 
@@ -345,9 +340,10 @@ namespace MemoryMappedFiles
                     }
                     Console.WriteLine("{0}({1})", func, argList);
 #endif
-
+                    // do not set return value if return value is null (the method return type is void)
                     var result = meth.Invoke(serverImp, args);
-                    this.mmf.put_return_value(result as string);
+                    if (result != null)
+                        this.mmf.put_return_value(result as string);
                 }
                 finally
                 {

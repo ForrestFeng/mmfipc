@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.IO.MemoryMappedFiles;
 
-namespace MemoryMappedFiles
+namespace MmfIPC
 {
     class Program
     {

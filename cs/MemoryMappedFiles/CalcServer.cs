@@ -4,15 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MemoryMappedFiles
+namespace MmfIPC
 {
-    internal interface ICalc
-    {
-        string Add(string a, string b);
-    }
-
-
-    internal class CalcServer :  ICalc
+   
+    internal class CalcServer 
     {
         public MmfIpcServer IPCServer = null;
 
@@ -25,6 +20,12 @@ namespace MemoryMappedFiles
         {
             int result = Convert.ToInt32(a) + Convert.ToInt32(b);
             return result.ToString();
+        }
+
+        // this method returns nothing to test if the C# server can handle it correctly
+        public void SetName(string name)
+        {
+            return;
         }
     }
 
