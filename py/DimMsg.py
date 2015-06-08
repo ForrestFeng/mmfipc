@@ -180,7 +180,7 @@ class HardwareStateEvtMsgResolver():
 
 class DimMsgCollector(MmfIPC.MmfIpcServer):
     __FLAG_PRINT_BUCKY_CHANGE = True
-    __FLAG_PRINT_SYSTEM_STATUS = True
+    __FLAG_PRINT_SYSTEM_STATUS = False
     __FLAG_PRINT_MESSAGE_TYPE = False
     __FLAG_PRINT_LONG_BAR_ON_BCUCKY_CHANGE = True
     __Long_Bar = "-" * 100
@@ -380,46 +380,46 @@ class DimMsgCollector(MmfIPC.MmfIpcServer):
         print logmsg
         return False
 
-    def Expect(self, expressionString, expectValue):
+    def __Expect_Hardware_State(self, property_name, expect_value):
         # tuple contains (real result, expected value)
-        self.Expection[expressionString] = (None, expectValue)
+        self.Expection[property_name] = (None, expect_value)
 
-    def Verify(self, expressionString, timeoutInSeconds):
+    def __Verify_Hardware_State(self, property_name, timeoutInSeconds):
         timeTaken = 0
-        while timeTaken < timeoutInSeconds:
-            if self.Expection[expressionString][0] == self.Expection[expressionString][1]:
-                return True
-            else:
-                timeTaken += 0.5
-                time.sleep(0.5)
-        del self.Expection[expressionString]
-        return False
-
-    def WaitRegexMatch(self, shortMsgType, patternToSearch, timeoutInSeconds):
-        """
-        :param shortMsgType:string
-        :param patternToSearch:string
-        :return: True if the pattern is found in shortMsgType else return False
-        """
-        timeTaken = 0
-
-        msgContent = None
         try:
-            msgContent = eval("self.{}".format(shortMsgType))
-        except Exception as e:
-            return False
-
-        while timeTaken < timeoutInSeconds:
-            result = re.match(patternToSearch, msgContent,  re.DOTALL)
-            logmsg = "self.HardwareStateEvtMsg match | {} | {}".format(patternToSearch, result is not None)
-            #print logmsg
-            if result is not None:
-                return True
-            else:
-                timeTaken += 0.2
-                time.sleep(0.2)
-        print logmsg
+            while timeTaken < timeoutInSeconds:
+                if self.Expection[property_name][0] == self.Expection[property_name][1]:
+                    return True
+                else:
+                    timeTaken += 0.5
+                    time.sleep(0.5)
+        finally:
+            if property_name in self.Expection.keys():
+                del self.Expection[property_name]
         return False
+
+    def VerifyHardwareState(self, property_name, expect_value, timeout=3):
+        """
+        :param property: eg. "WallBuckyRpt.Items.Selected"
+        :param expect_value: True
+        :param timeout: timeout for this verify in seconds
+        :return: (verify_result, real_value, raw_msg)True if the value for the key is the same as expect_value
+        """
+        timeTaken = 0
+        realValue = None
+        try:
+            while timeTaken < timeout:
+                evalStr = 'self.HardwareState.{}'.format(property_name)
+                realValue = eval(evalStr)
+                if realValue == expect_value:
+                    return True, realValue, self.HardwareStateEvtMsg
+                else:
+                    timeTaken += 0.25
+                    time.sleep(0.25)
+        finally:
+            pass
+        return False, realValue, self.HardwareStateEvtMsg
+
 
 
 class CollectorThread(threading.Thread):

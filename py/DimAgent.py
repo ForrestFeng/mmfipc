@@ -18,21 +18,54 @@ class DimAgent():
         DimAgent.__collectorThread.start()
 
     def ChangeBucy(self, logicalName, sync=False):
-        container = '{"DeviceContainerName": "%s", "CorrelationId": "%s"}' % (logicalName, uuid.uuid1())
-        DimAgent.__dimMsgSender.FireMessage("BuckySelectionReqMsg", container)
+        msg = '{"DeviceContainerName": "%s", "CorrelationId": "%s"}' % (logicalName, uuid.uuid1())
+        DimAgent.__dimMsgSender.FireMessage("BuckySelectionReqMsg", msg)
+
+
+    def VerifyHardwareState(self, property_name, expect_value, timeout=3):
+        return DimAgent.__dimMsgCollector.VerifyHardwareState(property_name, expect_value, timeout)
+
+    @property
+    def HardwareState(self):
+        return DimAgent.__dimMsgCollector.HardwareState
+
+    @property
+    def HardwareStateMsg(self):
+        return DimAgent.__dimMsgCollector.HardwareStateEvtMsg
+
+    @property
+    def Messages(self):
+        """
+        get all received messages of the type sorted dict
+        :return:
+        """
+        return DimAgent.__dimMsgCollector.msgDict
+
+
 
 
 def main():
     print('Start at:', ctime())
     agent = DimAgent()
 
+    # do something to get the DimHardwareState first
+    agent.ChangeBucy(DimAgent.WALL)
+    agent.ChangeBucy(DimAgent.TABLE)
+    time.sleep(3)
+    print agent.Messages
     while True:
+        return
         agent.ChangeBucy(DimAgent.WALL)
-        time.sleep(2)
+        wait_result, real_value, raw_msg = agent.VerifyHardwareState("WallBuckyRpt.Items.Selected", True, 4)
+        print wait_result, real_value
+
         agent.ChangeBucy(DimAgent.TABLE)
-        time.sleep(2)
+        wait_result, real_value, raw_msg = agent.VerifyHardwareState("TableBuckyRpt.Items.Selected", True, 4)
+        print wait_result, real_value
+
         agent.ChangeBucy(DimAgent.TABLE_TOP)
-        time.sleep(2)
+        wait_result, real_value, raw_msg = agent.VerifyHardwareState("TabletopBuckyRpt.Items.Selected", True, 4)
+        print wait_result, real_value
 
     print('End at:', ctime())
 
