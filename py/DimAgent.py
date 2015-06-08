@@ -43,9 +43,8 @@ def main():
     agent.ChangeBucy(DimAgent.WALL)
     agent.ChangeBucy(DimAgent.TABLE)
     time.sleep(3)
-    print agent.HardwareStateEvtMsgRaw
+
     while True:
-        return
         agent.ChangeBucy(DimAgent.WALL)
         wait_result, real_value, raw_msg = agent.VerifyHardwareState("WallBuckyRpt.Items.Selected", True, 4)
         print wait_result, real_value
@@ -57,6 +56,7 @@ def main():
         agent.ChangeBucy(DimAgent.TABLE_TOP)
         wait_result, real_value, raw_msg = agent.VerifyHardwareState("TabletopBuckyRpt.Items.Selected", True, 4)
         print wait_result, real_value
+        print raw_msg
 
     print('End at:', ctime())
 

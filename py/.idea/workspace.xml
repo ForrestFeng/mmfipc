@@ -70,11 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DimAgent.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="DimAgent.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DimAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="552" max-vertical-offset="1445">
-              <caret line="47" column="14" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.46212122" vertical-offset="314" max-vertical-offset="1445">
+              <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -82,11 +82,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DimMsg.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="DimMsg.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DimMsg.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2657068" vertical-offset="4234" max-vertical-offset="5576">
-              <caret line="363" column="55" selection-start-line="363" selection-start-column="55" selection-end-line="363" selection-end-column="55" />
+            <state vertical-scroll-proportion="-21.821428" vertical-offset="4795" max-vertical-offset="5576">
+              <caret line="434" column="50" selection-start-line="434" selection-start-column="50" selection-end-line="434" selection-end-column="50" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
                 <element signature="e#8254#17789#0" expanded="false" />
@@ -152,8 +152,8 @@
         <option value="$PROJECT_DIR$/MmfIPCCleintWithAsyncMsgFromServer.py" />
         <option value="$PROJECT_DIR$/DimTestAgent.py" />
         <option value="$PROJECT_DIR$/MmfIPC.py" />
-        <option value="$PROJECT_DIR$/DimAgent.py" />
         <option value="$PROJECT_DIR$/DimMsg.py" />
+        <option value="$PROJECT_DIR$/DimAgent.py" />
       </list>
     </option>
   </component>
@@ -825,25 +825,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DimAgent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="552" max-vertical-offset="1445">
-          <caret line="47" column="14" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DimMsg.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2657068" vertical-offset="4234" max-vertical-offset="5576">
-          <caret line="363" column="55" selection-start-line="363" selection-start-column="55" selection-end-line="363" selection-end-column="55" />
+        <state vertical-scroll-proportion="-21.821428" vertical-offset="4795" max-vertical-offset="5576">
+          <caret line="434" column="50" selection-start-line="434" selection-start-column="50" selection-end-line="434" selection-end-column="50" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
             <element signature="e#8254#17789#0" expanded="false" />
             <element signature="e#20234#20341#0" expanded="false" />
             <element signature="e#20423#20856#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DimAgent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46212122" vertical-offset="314" max-vertical-offset="1445">
+          <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>

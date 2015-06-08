@@ -419,13 +419,13 @@ class DimMsgCollector(MmfIPC.MmfIpcServer):
                 evalStr = 'self.HardwareState.{}'.format(property_name)
                 realValue = eval(evalStr)
                 if realValue == expect_value:
-                    return True, realValue, self.HardwareStateEvtMsg
+                    return True, realValue, self.msgDict["HardwareStateEvtMsg_Raw"]
                 else:
                     timeTaken += 0.25
                     time.sleep(0.25)
         finally:
             pass
-        return False, realValue, self.HardwareStateEvtMsg
+        return False, realValue, self.msgDict["HardwareStateEvtMsg_Raw"]
 
 
 
