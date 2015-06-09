@@ -8,3 +8,5 @@ _ReSharper*/
 *.bak
 *.suo
 *.pyc
+sample/MsgBus/py/.idea/.name
+.idea/
